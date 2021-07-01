@@ -37,4 +37,4 @@ SMTPUSER=zakariaezaoui
 SMTPPASS=zaka1200
 SUBJECT="Rapport"
 FILE='rap.txt'
-sudo sendEmail -f  $SMTPFROM -t $SMTPTO -u $SUBJECT -s $SMTPSERVER -a $FILE -xu $SMTPUSER -xp $SMTPPASS -o tls=yes
+sudo sendEmail -f  $SMTPFROM -t $SMTPTO -m "rapport" -u $SUBJECT -s $SMTPSERVER -a $FILE -xu $SMTPUSER -xp $SMTPPASS -o tls=yes
