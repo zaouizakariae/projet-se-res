@@ -6,8 +6,8 @@ c=0
 declare -A b
 while read line; do
        a=$((a+1))
-       score=$(curl -G -s https://api.abuseipdb.com/api/v2/check --data-urlencode "ipAddress=$line"  -d maxAgeInDays=90  -d verbose -H "Key: 56348a879ca27fd5912ffcb2e7e86d78cd9d099e7c79f29e2a16e09888d471c1cf1fa23a638c40cb"  -H "Accept: application/json"| jq --raw-output '.data.abuseConfidenceScore')
-       n=$(curl -G -s https://api.abuseipdb.com/api/v2/check --data-urlencode "ipAddress=$line"  -d maxAgeInDays=90  -d verbose -H "Key: 56348a879ca27fd5912ffcb2e7e86d78cd9d099e7c79f29e2a16e09888d471c1cf1fa23a638c40cb"  -H "Accept: application/json"| jq --raw-output '.data.countryName')
+       score=$(curl -G -s https://api.abuseipdb.com/api/v2/check --data-urlencode "ipAddress=$line"  -d maxAgeInDays=90  -d verbose -H "Key: 56348a879ca27fd5912ffcb2e7e86d78cd9d099e7c79f29e2a16e09888d471c1cf1fa23a638c40cb"  -H "Accept>
+       n=$(curl -G -s https://api.abuseipdb.com/api/v2/check --data-urlencode "ipAddress=$line"  -d maxAgeInDays=90  -d verbose -H "Key: 56348a879ca27fd5912ffcb2e7e86d78cd9d099e7c79f29e2a16e09888d471c1cf1fa23a638c40cb"  -H "Accept: ap>
        if (( !${#b[$n]} )); then
          b[$n]=0;
        fi
@@ -23,18 +23,17 @@ echo $n;
           sudo iptables -A INPUT -s $line -j DROP
         fi
 done < $filename
+echo "Le pourcentage des @IP bloquees est : "$(((100*c)/a)) % >>rap.txt;
+
 for KEY in "${!b[@]}"; do
   # Print the KEY value
   echo $KEY >> rap.txt;
-  # Print the VALUE attached to that KEY
-  echo "Le pourcentage des adresses IP bloquees est :" $(((b[$KEY]*100)/c)) % >>rap.txt;
+  echo  $(((b[$KEY]*100)/c)) % >> rap.txt;
 done
-echo $(((100*c)/a)) % >>rap.txt;
-SMTPFROM=seres12001200@gmail.com
-SMTPTO=seres12001200@gmail.com
-SMTPSERVER=smtp.googlemail.com:587
-SMTPUSER=zakariaezaoui
-SMTPPASS=zaka1200
-SUBJECT="Rapport"
-FILE='rap.txt'
-sudo sendEmail -f  $SMTPFROM -t $SMTPTO -m "rapport" -u $SUBJECT -s $SMTPSERVER -a $FILE -xu $SMTPUSER -xp $SMTPPASS -o tls=yes
+sendEmail -f seres@gmail.com -t seres@gmail.com -u rapport  -m rap.txt -s smtp.googlemail.com:587 -xu zakariaezaoui -xp psswd -o tls=yes -a rap.txt
+
+
+
+
+
+
